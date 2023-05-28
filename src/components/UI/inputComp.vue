@@ -1,6 +1,6 @@
 <template>
 
-    <input class="input" type="text" :value="modelValue" @input="updateValue" :placeholder="placeholder">
+    <input class="input" type="text" :value="modelValue" @input="e => $emit('update:modelValue', e.target.value)" :placeholder="placeholder">
 
 </template>
 <script lang="ts">
@@ -14,9 +14,10 @@ export default {
         placeholder: [String]
     },
     methods: {
-        updateValue(e:any){
-            this.$emit('update:modelValue', e.target.value);
-        }
+        // ЭТО НЕ РАБОТАЛО ПО КАКОЙ-ТО ПРИЧИНЕ
+        // updateValue(e:e){
+        //     this.$emit('update:modelValue', e.target.value);
+        // }
     }
 }
 </script>
