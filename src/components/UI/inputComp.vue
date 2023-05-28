@@ -14,7 +14,7 @@ export default {
         placeholder: [String]
     },
     methods: {
-        // ЭТО НЕ РАБОТАЛО ПО КАКОЙ-ТО ПРИЧИНЕ
+        // ЭТО НЕ РАБОТАЛО ПО КАКОЙ-ТО ПРИЧИНЕ/ ПЕРЕНЕС ЛОГИКУ НАВЕРХ В ШАБЛОН ☝️
         // updateValue(e:e){
         //     this.$emit('update:modelValue', e.target.value);
         // }
