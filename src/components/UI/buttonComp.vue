@@ -1,5 +1,5 @@
 <template>
-    <button class="btn__auth">
+    <button class="btn">
         <slot></slot>
     </button>
 </template>
@@ -10,13 +10,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-.btn__auth {
-    width: 80px;
-    height: 45px;
+.btn {
+    width: calc(var(--auto-size) * 5);
+    height: calc(var(--auto-size) * 2.2);
     border-radius: 15px;
     background-color: rgba($color: #121C14, $alpha: 1.0);
     color: #0A7E5B;
-    font-size: 20px;
+    font-size: calc(var(--auto-size) * 1);
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;

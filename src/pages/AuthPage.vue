@@ -10,6 +10,7 @@
                     <input-comp
                     class="auth__form-input"
                     :placeholder="'Hash / UUID'"
+                    v-model="uuid"
                     >
                     </input-comp>
                     <input-comp 
@@ -17,11 +18,12 @@
                     id="auth_pass-id"
                     :placeholder="'password'"
                     v-model="pass"
+                    type="password"
                     >
                     </input-comp>
                     <button-comp 
                     class="auth__form-btn"
-                    @click='test'
+                    @click='manag'
                     >Auth</button-comp>
                 </div>
             </form>
@@ -33,13 +35,35 @@
 
 <script lang="ts" setup>
 import AuthController from '@/controllers/auth_controller';
-import {onMounted, ref} from 'vue'
+import {onMounted, ref} from 'vue';
+import { enc_hex } from '@/crypto_alg/encrypte_controller';
+import { PosholNaxuiZaebalBlyatSukaEbuchay } from '@/plugins/pluginState';
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
-const pass = ref('')
-function test() {
-    AuthController.verify('1x', pass.value)
+
+function manag() {
+    // const {auth} = ParseStateManager();
+    // console.log(auth.value);
+    console.log(PosholNaxuiZaebalBlyatSukaEbuchay(useStore, computed));
 }
+
+const pass = ref('');
+const uuid = ref('');
+function verify() {
+    AuthController.uuid_hex = uuid.value;
+    AuthController.password = pass.value;
+    const reulst_verify : Boolean = AuthController.verify();
     
+    if(reulst_verify) {
+        document.cookie = `user_uuid=${uuid.value}`;
+        document.cookie = `use_pass=${pass.value}`;
+        console.log(enc_hex(pass.value));
+    } else {
+        document.cookie = `user_uuid=undefined`;
+        document.cookie = `use_pass=undefined`;
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////// Legacy code ///////////////////////////////////////////////////////
 // import { useStore } from 'vuex';

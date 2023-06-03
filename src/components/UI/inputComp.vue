@@ -24,8 +24,9 @@ export default {
 <style lang="scss" scoped>
 .input {
     background-color: rgba($color: #121C14, $alpha: 1.0);
-    width: 500px;
-    height: 50px;
+    // width: 500px;
+    width: calc(var(--auto-size) * 22.5);
+    height: calc(var(--auto-size) * 2.2);
     color: rgba($color: #fff, $alpha: 1);
     outline: rgba($color: #000000, $alpha: .0);
     border: rgba($color: #000000, $alpha: .0);

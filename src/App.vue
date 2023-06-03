@@ -11,15 +11,14 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 
 
-
-
-
 </script>
 <style lang="scss">
 :root{
     --auto-size: calc(1vw + 1vh);
     --main-color: #080F09;
     --block-color: #182C1B;
+    --inner-block-color: #121C14;
+    --message-color: #0A7E5B;
     --green-light: #;
     --radius: 15px;
     --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue';

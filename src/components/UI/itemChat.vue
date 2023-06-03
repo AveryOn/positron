@@ -22,6 +22,11 @@ export default {
     &:hover{
         cursor: pointer;
     }
+    &::placeholder{
+        font-size: calc(var(--auto-size) * 1);
+        text-overflow: ellipsis;
+    }
 }
+
 
 </style>
