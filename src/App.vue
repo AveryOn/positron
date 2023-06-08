@@ -1,30 +1,56 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
+<script setup>
+import { computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+
+</script>
+
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+:root{
+    --auto-size: calc(1vw + 1vh);
+    --main-color: #080F09;
+    --block-color: #182C1B;
+    --inner-block-color: #121C14;
+    --message-color: #0A7E5B;
+    --green-light: #;
+    --radius: 15px;
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue';
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(0, 0, 0, 0) inset;
+  background-color: #111;
+  position: absolute;
+
+}
+::-webkit-scrollbar-thumb {
+  background-color: hsl(0, 0%, 21%);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%,
+  color-stop(.5, transparent), to(transparent));
+  border-radius: 15%;
+  position: absolute;
+
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(0, 0%, 20%);
+  transition: .3s;
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>
