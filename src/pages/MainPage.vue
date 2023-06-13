@@ -100,12 +100,6 @@ function openSetting(){
         gsap.to('.main__setting', {left: '0', width: '0', duration: 0.5})
     }
 }
-
-onMounted(() => {
-    console.log(store.state.theme.theme);
-    
-})
-
 </script>
 
 

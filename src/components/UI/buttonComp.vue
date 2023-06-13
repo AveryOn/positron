@@ -3,11 +3,12 @@
         <slot></slot>
     </button>
 </template>
-<script setup>
-const name = 'button-comp'
-</script>
-<style lang="scss" scoped>
 
+<script setup>
+
+</script>
+
+<style lang="scss" scoped>
 .btn {
     width: calc(var(--auto-size) * 5);
     height: calc(var(--auto-size) * 2.2);

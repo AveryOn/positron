@@ -45,16 +45,16 @@ const uuid = ref('');
 function verify() {
     AuthController.uuid_hex = uuid.value;
     AuthController.password = pass.value;
-    // const reulst_verify = AuthController.verify();
+    const reulst_verify = AuthController.verify();
 
-    // if (reulst_verify) {
-    //     document.cookie = `user_uuid=${uuid.value}`;
-    //     document.cookie = `use_pass=${pass.value}`;
-    //     console.log(enc_hex(pass.value));
-    // } else {
-    //     document.cookie = `user_uuid=undefined`;
-    //     document.cookie = `use_pass=undefined`;
-    // }
+    if (reulst_verify) {
+        document.cookie = `user_uuid=${uuid.value}`;
+        document.cookie = `use_pass=${pass.value}`;
+        console.log(enc_hex(pass.value));
+    } else {
+        document.cookie = `user_uuid=undefined`;
+        document.cookie = `use_pass=undefined`;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////// Legacy code ///////////////////////////////////////////////////////
