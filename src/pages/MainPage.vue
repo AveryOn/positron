@@ -1,10 +1,9 @@
 <template>
-
     <div class="main">
-
-        <div class="main__setting">
-
-        </div>
+        <!-- <errorComp>Error</errorComp> -->
+        <SettingsVIew v-show="isOpenSetting" class="main__setting">
+            
+        </SettingsVIew>
 
         <nav class="main__navbar">
             <!-- Кнопка Настройки -->
@@ -19,57 +18,71 @@
         class="main__chat"
         :style="{ width: '70px', marginLeft: '10px'}"        
         >
+            <!-- Счетчик, отображает кол-во выбранных сообщений  -->
+            <p class="counter-messages" v-show="selectMessages.length">Selected messages: {{ selectMessages.length }}</p>
+
             <div class="stick-close" @click="closeChat"></div>
             <!-- ОТРИСОВКА СООБЩЕНИЙ -->
             <div class="chat__inner-block">
 
-                <item-message v-for="message in messages" :messageData="message"></item-message>
+                <!-- Текст если нет сообщений -->
+                <h2 
+                class="chat__no-messages-hint"
+                v-show="!messages.length"
+                >
+                    No messages
+                </h2>
+                <itemMessage 
+                v-for="message of messages" 
+                :messageData="message"
+                :key="message.id"
+                :id="message.id"
+                @selectMessage="addSelectMessages"
+                >
+                </itemMessage>
                 
             </div>
 
             <div class="chat__inner-input-block">
+
+                <!-- ВВОД СООБЩЕНИЯ -->
                 <input-comp 
                 class="inner-input-block__input"
                 placeholder="text"
+                v-model="messageText"
+                @keyup.enter="sendMessage"
                 ></input-comp>
-                <button-comp class="inner-input-block__btn">Send</button-comp>
+
+                <!-- КНОПКА ОТПРАВКИ СООБЩЕНИЯ -->
+                <button-comp 
+                class="inner-input-block__btn"
+                @click="sendMessage"
+                >
+                    Send
+                </button-comp>
             </div>
 
         </div>
 
     </div>
-
 </template>
 
 <script setup>
 import itemMessage from '@/components/UI/itemMessage.vue';
-import {ref, onMounted} from 'vue';
-import { useStore } from 'vuex';
+import SettingsVIew from '@/components/SettingsVIew.vue';
+import { ref, watch } from 'vue';
 // gsap
 import gsap from 'gsap';
 
-const messages = [
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-    {data: 'Hello world', from: 'me', to: 'friend'},
-]
-
-const store = useStore();
-
 const isOpenSetting = ref(false);
 const isOpenChat = ref(false);
+const messageText = ref('');
+const selectMessages = ref([]);
+const messages = ref([
+    // {id: 121231241, data: 'Hello', fromMe: true},
+])
+
+// varriables for custom themes ...
 
 function openChat(){
     isOpenChat.value = true;
@@ -80,6 +93,7 @@ function openChat(){
     gsap.to('.inner-input-block__input', {scale: 1, left: 0, duration: 0.4, delay: 0.1});
     gsap.to('.stick-close', {scale: 1, right: '10px', duration: 0.4, delay: 0.2});
     gsap.to('.item-message', {scale: 1, duration: 0.3, delay: 0.2})
+    gsap.to('.chat__no-messages-hint', {left: 0, scale: 1, duration: 0.3, delay: 0.2})
 }
 function closeChat(){
     isOpenChat.value = true;
@@ -90,6 +104,7 @@ function closeChat(){
     gsap.to('.stick-close', {scale: 0, right: '-600px', duration: 0.3, delay: 0});
     tl.to('.main__chat', {marginLeft: 10, width: '70px', duration: 0.5});
     tl.to('.chat__inner-block', {width: '0', left: '-250px', duration: 0.4, delay: 0});
+    gsap.to('.chat__no-messages-hint', {left: '-80%', scale: 0, duration: 0.3, delay: 0.3})
 }
 function openSetting(){
     if(!isOpenSetting.value){
@@ -100,8 +115,35 @@ function openSetting(){
         gsap.to('.main__setting', {left: '0', width: '0', duration: 0.5})
     }
 }
-</script>
+function sendMessage(){
+    const newMessage = {
+        id: Date.now(),
+        data: messageText.value,
+        fromMe: true,
+    }
+    messages.value.push(newMessage);
+    messageText.value = ''
+    const innerBlock = document.querySelector('.chat__inner-block');
+    setTimeout(() => {
+        innerBlock.scroll({
+            top: innerBlock.scrollHeight,
+            behavior: "smooth",
+        });
+    }, 10)
+}
 
+// Добавляет выбранные сообщения в массив
+function addSelectMessages(bool, message){
+    // Если сообщение кликнуто, то оно добавляется в массив, если снова произошло 
+    // нажатие на сообщение то оно исключается из массива
+    if(bool){
+        selectMessages.value.push(message)
+    }else{
+        selectMessages.value.splice(selectMessages.value.indexOf(message), 1);
+    }
+}
+
+</script>
 
 <style lang="scss" scoped>
 ::-webkit-scrollbar {
@@ -130,17 +172,17 @@ function openSetting(){
     height: max-content;
     background-color: var(--main-color);
 }
-.main__setting{
-    position: absolute;
-    left: 0;
-    width: 0;
-    height: 80%;
-    background: rgba(18, 28, 20, 0.75);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    box-shadow: 10px 15px 34px rgba(0, 0, 0, .5);
-    z-index: 100;
-}
+// .main__setting{
+//     position: absolute;
+//     left: 0;
+//     width: 0;
+//     height: 80%;
+//     background: rgba(18, 28, 20, 0.75);
+//     backdrop-filter: blur(5px);
+//     border-radius: 15px;
+//     box-shadow: 10px 15px 34px rgba(0, 0, 0, .5);
+//     z-index: 100;
+// }
 .main__navbar{
     height: max-content;
     min-width: 50px;
@@ -170,6 +212,7 @@ function openSetting(){
     flex-direction: column;
     align-items: center;
     background-color: var(--block-color);
+    background-color: rgba($color: var(--block-color), $alpha: var(--glass-effect));
     border-radius: var(--radius);
     padding: 10px 0;
 }
@@ -185,6 +228,25 @@ function openSetting(){
     border-radius: var(--radius);
     margin-right: 10px;
     overflow: hidden;
+}
+.counter-messages{
+    position: absolute;
+    align-self: flex-start;
+    left: 30px;
+    top: 5px;
+    color: #ac2d1d;
+    font-weight: bolder;
+    font-size: calc(var(--auto-size) * 0.9);
+    font-family: sans-serif;
+}
+.chat__no-messages-hint{
+    position: relative;
+    left: -80%;
+    font-size: calc(var(--auto-size) * 2);
+    margin: auto;
+    color: #ac2d1d;
+    // зеленый цв. 
+    // color: #0cbb87;
 }
 .stick-close{
     position: absolute;
@@ -210,9 +272,11 @@ function openSetting(){
     height: 85%;
     max-height: 85%;
     margin: 30px 0 0 0;
+    padding: 10px;
     border-radius: var(--radius);
     background-color: var(--inner-block-color);
     overflow-y: auto;
+    overflow-x: hidden;
 }
 .chat__inner-input-block{
     display: flex;

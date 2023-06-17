@@ -1,26 +1,40 @@
 <template>
-
-    <input class="input" type="text" :value="modelValue" @input="e => $emit('update:modelValue', e.target.value)" :placeholder="placeholder">
-
+    <input 
+    class="input" 
+    type="text" 
+    :placeholder="props.placeholder"
+    :value="props.modelValue"
+    @input="updateValue"
+    >
 </template>
-<script >
-export default {
-    name: 'input-comp',
-    props: {
-        modelValue: {
-            type: [String, Number],
-            default: ''
-        },
-        placeholder: [String]
-    },
-    methods: {
-        // ЭТО НЕ РАБОТАЛО ПО КАКОЙ-ТО ПРИЧИНЕ/ ПЕРЕНЕС ЛОГИКУ НАВЕРХ В ШАБЛОН ☝️
-        // updateValue(e:e){
-        //     this.$emit('update:modelValue', e.target.value);
-        // }
+
+<script setup>
+const props = defineProps({
+    placeholder: String,
+    modelValue: {
+        type: [String, Number],
+        default: ''
     }
+})
+const emit = defineEmits(['update:modelValue']);
+
+function updateValue(e){
+    emit('update:modelValue', e.target.value);
 }
+
+// Пример использования с v-model
+// const value = computed({
+//     get(){
+//         return props.modelValue
+//     },
+//     set(e){
+//         console.log(e);
+//         emit('update:modelValue', e);
+//     }
+// })
+
 </script>
+
 <style lang="scss" scoped>
 .input {
     background-color: rgba($color: #121C14, $alpha: 1.0);
