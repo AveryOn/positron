@@ -1,15 +1,20 @@
 const express = require('express');
-const router = express.Router();
+const users = express.Router();
+const userActions = require('../database/actions');
 
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
+users.get('/', function (req, res, next) {
     res.send('Route USERS');
 });
 
-router.post('/', function (req, res, next) {
+users.post('/', function (req, res, next) {
     res.send('Route USERS');
 });
 
+users.post('/create-user', (req, res, next) => {
+    const userDatareq = req.body;
+    console.log(userDatareq);
+})
 
-module.exports = router;
+
+module.exports = users;
