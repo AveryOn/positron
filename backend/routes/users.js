@@ -1,3 +1,4 @@
+// Маршрут для обработки пользовательсих запросов
 const express = require('express');
 const users = express.Router();
 const userActions = require('../database/actions');
